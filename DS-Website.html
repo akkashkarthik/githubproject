@@ -1,0 +1,169 @@
+<html>
+    <style>
+      .container{
+        background-color:#008080;
+        margin-left: 20px;
+margin-right:30px;
+
+padding: 20px;
+border-radius: 20px;
+}
+input[type="file"]{
+    color: white;
+_}
+button{
+    background-color: #36454F;
+    padding-left: 110px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 110px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-family: sans-serif;
+    color: white;
+}
+body{
+    background-color: #002147;
+}
+h2{
+    color: white;
+    font-weight: bold;
+    font-family: sans-serif;
+}
+label{
+    color:white;
+    font-weight: bold;
+    font-family: sans-serif;
+    font-size: 20px;
+}
+.container2{
+background-color: #6082B6;
+margin-left: 20px;
+margin-right:30px;
+
+padding: 20px;
+border-radius: 20px;
+}
+.container3{
+    background-color: #03C03C;
+margin-left: 20px;
+margin-right:30px;
+
+padding: 20px;
+border-radius: 20px;
+}
+.groups{
+    display: flex;
+  flex-wrap: nowrap;
+}
+
+#encryptedText{
+    padding-bottom: 200px;
+    padding-right: 80px;
+}
+
+#decryptedText{
+    padding-bottom: 200px;
+    padding-right: 80px;
+}
+
+
+.containerE{
+    background-color: #AB274F;
+margin-left: 30px;
+margin-right:30px;
+
+padding: 20px;
+border-radius: 20px;
+}
+#messageInput{
+    padding-bottom: 200px;
+    padding-right: 80px;
+}
+#receivedMessage{
+    padding-bottom: 50px;
+    padding-right: 80px;
+}
+#receivedFile{
+    padding-bottom: 20px;
+    padding-right: 80px;
+}
+header{
+    font-size: 50px;
+    font-family: sans-serif;
+    font-weight: bold;
+    color: white;
+    margin-left: 500px;
+}
+    </style>
+    <body>
+        <header>Digital Signature</header><br>
+        <br>
+        <div class="groups">
+        <div class="container">
+           <h2>Sender Side</h2> <br>
+           <br>
+            <textarea id="messageInput"></textarea><br>
+            <br>
+            <input type="file" id="myfile" name="myfile"><br>
+            <br>
+            <button onclick="sendMessage()">Send</button><br>
+            <br>
+            
+</div>
+<div class="ContainerE">
+    <h2>Encryption</h2> <br>
+    <br>
+            <Textarea  id="encryptedText" readonly></Textarea><br>
+            <br>
+</div>
+<div class="container2">
+<h2>Decryption</h2><br>
+<br>
+<Textarea id="decryptedText" readonly></Textarea><br>
+<br>
+</div>
+<div class="container3">
+    <h2>Receiver Side</h2><br>
+    <br>
+    <label>Message</label><br>
+    <br>
+    <Textarea id="receivedMessage" readonly></Textarea><br>
+    <br>
+    <label>File</label><br>
+    <br>
+    <Textarea id="receivedFile" readonly></Textarea><br>
+    <br>
+</div>
+</div>
+    </body>
+    <script>
+        // Function to handle sending message
+        async function sendMessage() {
+            let message = document.getElementById('messageInput').value;
+            let file = document.getElementById('myfile').files[0];
+
+            // Calculate SHA-256 hash of the message
+            let hashBuffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(message));
+            let hashArray = Array.from(new Uint8Array(hashBuffer));
+            let hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+            // Display encrypted text (hash value)
+            document.getElementById('encryptedText').value = hashHex;
+
+            // Simulate receiving side (decrypting)
+            // For demonstration, we just display the original message and file content
+            document.getElementById('decryptedText').value = message;
+
+            // Display received message
+            document.getElementById('receivedMessage').value = message;
+
+            // Display received file name
+            if (file) {
+                document.getElementById('receivedFile').value = file.name;
+            } else {
+                document.getElementById('receivedFile').value = 'No file selected';
+            }
+        }
+    </script>
+</html>
